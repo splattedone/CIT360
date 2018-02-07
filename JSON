@@ -1,0 +1,108 @@
+/*
+  JSON Syntax Rules
+    1. Data is in name/value pairs
+    2. Data is seperated by commas
+    3. Curly braces hold objects
+    4. Square brackets hold arrays
+    JSON Data is written as name/value pairs.
+    A name/value pair consists of a field name in double quotes followed by a colon followed by a value. 
+*/
+
+"firstName":"Matt"
+
+/* 
+  JSON values are typical values and can be a number (java.lang.Number), a string(java.lang.String), a boolean (java.lang.Boolean), 
+  an array (java.util.List), an object (java.util.Map), or Null (null). JSON object are written inside curly braces ({}). 
+*/
+
+{"firstName":"Matt", "lastName":"Appel"}
+
+
+//  JSON arrays are written inside square ([]) brackets 
+
+
+"Heroes":[
+    {"firstName":"Matt", "lastName":"Appel"}, 
+    {"firstName":"Han", "lastName":"Solo"}, 
+    {"firstName":"Bruce","lastName":"Wayne"}
+]
+
+
+/* 
+  Example
+  The This example comes from https://www.tutorialspoint.com/json/json_java_example.htm, however the commentary is my own.
+*/
+
+//Needed imports
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.ParseException;
+import org.json.simple.parser.JSONParser;
+
+//specify new class
+class JsonDecodeDemo 
+{
+  //Create object, specifying the first value is a string and the second will vary
+   public static void main(String[] args) 
+   {
+      JSONParser parser = new JSONParser();
+      
+      /*
+      This is a very convoluted way to create an array.
+      In pure Java this would look like this: int[] intArray = new int[]{ 1,2,3,4,5,6,7,8,9,10 }; 
+      The \'s are escape characters here and should be ignored overall.
+      */
+      
+      String s = "[0,{\"1\":{\"2\":{\"3\":{\"4\":[5,{\"6\":7}]}}}}]";
+		
+      try{
+         Object obj = parser.parse(s);
+         JSONArray array = (JSONArray)obj;
+			
+         System.out.println("The 2nd element of array");
+         System.out.println(array.get(1));
+         System.out.println();
+         
+         /*
+         This yields:
+           "
+           The 2nd element of array
+           {"1":{"2":{"3":{"4":[5,{"6":7}]}}}}
+           "
+         Remember that in these arrays, the first element is number 0, not number 1
+         */
+
+         JSONObject obj2 = (JSONObject)array.get(1);
+         System.out.println("Field \"1\"");
+         System.out.println(obj2.get("1"));    
+
+         /*
+         This yields:
+           "
+             Field "1"
+             {"2":{"3":{"4":[5,{"6":7}]}}}
+           "
+         */
+         
+         s = "{}";
+         obj = parser.parse(s);
+         System.out.println(obj);
+
+         s = "[5,]";
+         obj = parser.parse(s);
+         System.out.println(obj);
+
+         s = "[5,,2]";
+         obj = parser.parse(s);
+         System.out.println(obj);
+         
+      //Close your catch statement
+      }catch(ParseException pe){
+		
+        //Printing commands
+         System.out.println("position: " + pe.getPosition());
+         System.out.println(pe);
+      }
+   }
+}
+
