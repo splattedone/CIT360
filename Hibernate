@@ -1,0 +1,287 @@
+/*
+  The following examples were pulled from (https://www.tutorialspoint.com/hibernate/hibernate_examples.htm) and modified slightly. 
+  The commentary is all my work.
+*/
+
+/*
+------------------------------
+POJO Class Setup
+------------------------------
+*/
+
+      //Create the employee object and basic getter/setter functions.
+      public class Employee {
+         private int id;
+         private String firstName; 
+         private String lastName;   
+         private int salary;  
+
+         public Employee() {}
+         public Employee(String fname, String lname, int salary) {
+            this.firstName = fname;
+            this.lastName = lname;
+            this.salary = salary;
+         }
+
+         public int getId() {
+            return id;
+         }
+
+    */
+      Setting a new id for an entry in a DB can be dangerous if not used properly. Uneducated users could cause serious issues with 
+      the DB if they can freely edit this field. I would suggest leaving this functionality out unless you have a specific use and
+      your users will be familiar with databases. 
+    */
+         public void setId( int id ) {
+            this.id = id;
+         }
+
+         public String getFirstName() {
+            return firstName;
+         }
+
+         public void setFirstName( String first_name ) {
+            this.firstName = first_name;
+         }
+
+         public String getLastName() {
+            return lastName;
+         }
+
+         public void setLastName( String last_name ) {
+            this.lastName = last_name;
+         }
+
+         public int getSalary() {
+            return salary;
+         }
+
+         public void setSalary( int salary ) {
+            this.salary = salary;
+         }
+      }
+      
+/*
+------------------------------
+Database Setup
+------------------------------
+  The basic RDB table that will match the above object. Syntax here will vary with the DB type you choose.
+  Note that all fields can be NULL except the ID field, which is needed for the DB but not in our java class.
+*/
+  create table EMPLOYEE (
+     id INT NOT NULL auto_increment,
+     first_name VARCHAR(20) default NULL,
+     last_name  VARCHAR(20) default NULL,
+     salary     INT  default NULL,
+     PRIMARY KEY (id)
+  );
+  
+/*
+------------------------------
+XML Mapping File
+------------------------------
+This part will also vary depending on the type of DB you implement. 
+A few notes:
+  1. You should save the mapping document in a file with the format <classname>.hbm.xml.
+  
+  2. the XML document should have <hibernate-mapping> as the root class, with all <class> elements nested within.
+  
+  3. A <meta> tag is optional.
+  
+  (4-6 are quoted from Tutorialspoint.com
+  
+  4. The <id> element maps the unique ID attribute in class to the primary key of the database table. The name attribute of the 
+  id element refers to the property in the class and the column attribute refers to the column in the database table. The type 
+  attribute holds the hibernate mapping type, this mapping types will convert from Java to SQL data type.
+  
+  5. The <generator> element within the id element is used to generate the primary key values automatically. The class attribute 
+  of the generator element is set to native to let hibernate pick up either identity, sequence or hilo algorithm to create primary 
+  key depending upon the capabilities of the underlying database.
+  
+  6. The <generator> element within the id element is used to generate the primary key values automatically. The class attribute of 
+  the generator element is set to native to let hibernate pick up either identity, sequence or hilo algorithm to create primary key 
+  depending upon the capabilities of the underlying database.
+  
+*/
+ 
+    <?xml version = "1.0" encoding = "utf-8"?>
+    <!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+  
+  //The aforementioned master class
+    <hibernate-mapping>
+  
+  //Unique class description for each table in the DB you'll be interacting with.
+       <class name = "Employee" table = "EMPLOYEE">
+
+  //Optional meta description for added clarity
+          <meta attribute = "class-description">
+             This class contains the employee detail. 
+          </meta>
+  
+  //Maps the id attribute to the table primary key with the generator to generate new id's as needed.
+          <id name = "id" type = "int" column = "id">
+             <generator class="native"/>
+          </id>
+
+  //The specific properties for each column in the table, maps the java property name to the column name, then the outgoing java data
+    type. Note the java properties are named using the camel case java convention (columnName), whereas the column names follow the 
+    RDB convention (column_name).  
+          <property name = "firstName" column = "first_name" type = "string"/>
+          <property name = "lastName" column = "last_name" type = "string"/>
+          <property name = "salary" column = "salary" type = "int"/>
+
+  //Close each element
+       </class>
+    </hibernate-mapping>
+
+
+/*
+------------------------------
+Create Application Class
+------------------------------
+*/
+
+  //Necessary imports
+        import java.util.List; 
+        import java.util.Date;
+        import java.util.Iterator; 
+
+        import org.hibernate.HibernateException; 
+        import org.hibernate.Session; 
+        import org.hibernate.Transaction;
+        import org.hibernate.SessionFactory;
+        import org.hibernate.cfg.Configuration;
+        
+  //Create ManageEmployee class with SessionFactory included
+
+        public class ManageEmployee {
+           private static SessionFactory factory; 
+           public static void main(String[] args) {
+
+  //Note the try/catch that will let you know if the session isn't successfully created.
+              try {
+                 factory = new Configuration().configure().buildSessionFactory();
+              } catch (Throwable ex) { 
+                 System.err.println("Failed to create sessionFactory object." + ex);
+                 throw new ExceptionInInitializerError(ex); 
+              }
+
+  //Our new ManageEmployee object with the nickname "ME" used going forward.
+              ManageEmployee ME = new ManageEmployee();
+
+  //Create new employees. For each line, 
+              /* Add few employee records in database */
+              Integer empID1 = ME.addEmployee("Zara", "Ali", 1000);
+              Integer empID2 = ME.addEmployee("Daisy", "Das", 5000);
+              Integer empID3 = ME.addEmployee("John", "Paul", 10000);
+
+              /* List down all the employees */
+              ME.listEmployees();
+
+              /* Update employee's records */
+              ME.updateEmployee(empID1, 5000);
+
+              /* Delete an employee from the database */
+              ME.deleteEmployee(empID2);
+
+              /* List down new list of the employees */
+              ME.listEmployees();
+           }
+
+           /* Method to CREATE an employee in the database */
+           public Integer addEmployee(String fname, String lname, int salary){
+              Session session = factory.openSession();
+              Transaction tx = null;
+              Integer employeeID = null;
+
+              try {
+                 tx = session.beginTransaction();
+                 Employee employee = new Employee(fname, lname, salary);
+                 employeeID = (Integer) session.save(employee); 
+                 tx.commit();
+              } catch (HibernateException e) {
+                 if (tx!=null) tx.rollback();
+                 e.printStackTrace(); 
+              } finally {
+                 session.close(); 
+              }
+              return employeeID;
+           }
+
+           /* Method to  READ all the employees */
+           public void listEmployees( ){
+              Session session = factory.openSession();
+              Transaction tx = null;
+
+              try {
+                 tx = session.beginTransaction();
+                 List employees = session.createQuery("FROM Employee").list(); 
+                 for (Iterator iterator = employees.iterator(); iterator.hasNext();){
+                    Employee employee = (Employee) iterator.next(); 
+                    System.out.print("First Name: " + employee.getFirstName()); 
+                    System.out.print("  Last Name: " + employee.getLastName()); 
+                    System.out.println("  Salary: " + employee.getSalary()); 
+                 }
+                 tx.commit();
+              } catch (HibernateException e) {
+                 if (tx!=null) tx.rollback();
+                 e.printStackTrace(); 
+              } finally {
+                 session.close(); 
+              }
+           }
+
+           /* Method to UPDATE salary for an employee */
+           public void updateEmployee(Integer EmployeeID, int salary ){
+              Session session = factory.openSession();
+              Transaction tx = null;
+
+              try {
+                 tx = session.beginTransaction();
+                 Employee employee = (Employee)session.get(Employee.class, EmployeeID); 
+                 employee.setSalary( salary );
+             session.update(employee); 
+                 tx.commit();
+              } catch (HibernateException e) {
+                 if (tx!=null) tx.rollback();
+                 e.printStackTrace(); 
+              } finally {
+                 session.close(); 
+              }
+           }
+
+           /* Method to DELETE an employee from the records */
+           public void deleteEmployee(Integer EmployeeID){
+              Session session = factory.openSession();
+              Transaction tx = null;
+
+              try {
+                 tx = session.beginTransaction();
+                 Employee employee = (Employee)session.get(Employee.class, EmployeeID); 
+                 session.delete(employee); 
+                 tx.commit();
+              } catch (HibernateException e) {
+                 if (tx!=null) tx.rollback();
+                 e.printStackTrace(); 
+              } finally {
+                 session.close(); 
+              }
+           }
+        }
+
+
+
+/*
+------------------------------
+Execution
+------------------------------
+*/
+
+
+/*
+------------------------------
+POJO Class Setup
+------------------------------
+*/
