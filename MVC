@@ -1,4 +1,6 @@
 --Model
+--The model portion controlls the state of the objects in the interface. Any changes to the objects themselves should be 
+--housed here. This is the brain of the interface.  
 
   package mvctesting;
 
@@ -24,6 +26,10 @@
   }
 
 --Controller
+--Manages user interactions. If I click or scroll, or mouse over, or interact with this object at all the controller, well
+--controls it. It directs the model to change the state of the object, setting and changing values. It also directs the View
+--change the appearance of the objects as well. 
+
   package mvctesting;
 
   public class StudentController {
@@ -57,6 +63,9 @@
   }
 
 -- View
+--Does just what it says, this portion should control the appearance of everything, the CSS of the interface. 
+
+
   package mvctesting;
 
   public class StudentView {
