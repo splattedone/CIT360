@@ -1,0 +1,73 @@
+/*
+  The following examples of code were pulled from Java - The Complete Reference (9th Edition), pages 1208-1209. The commentary is my own. 
+  In this example, the author has created three different classes that work in harmony to convey the entire example.
+*/
+
+/*
+  Class/Bean 1 - "Colors"
+  This is the actual bean that does the real work. In this example, this is the only method with private methods the other two are ancillary classes to support the bean, one for serilisazion
+*/
+
+//Your basic imports. Note the Serializable import, which will grant persistence to this bean.
+import java.awt.*;
+import java.awt.event.*;
+import java.io.Serializable;
+
+//The basic constructor of the method, extending Canvas and implementing Serializable
+public class Colors extends Canvas implements Serializable {
+  
+  //the variables that will be needed, color. Note the transient property, explicitly stating that this value will not be saved.
+  transient private Color color; // not persistent
+  
+  //one private portion of this bean, which is persistent via Serializable.
+  private boolean rectangular; // is persistent
+
+//A public methods visible in this bean. Note the basic getters/setters.
+  public Colors() {
+    addMouseListener(new MouseAdapter() {
+      public void mousePressed(MouseEvent me) {
+        change();
+       }
+    });
+    rectangular = false;
+    setSize(200, 100);
+    change();
+  }
+  
+  public boolean getRectangular() {
+    return rectangular;
+  }
+  
+  public void setRectangular(boolean flag) {
+    this.rectangular = flag;
+      repaint();
+  }
+  
+  public void change() {
+    color = randomColor();
+    repaint();
+  }
+  
+//This is the 'secret sauce of the bean', which churns out a random set of RGB numbers to change the color of the rectangle. In the real world this would be the proprietary portion of the code, such as an algorithm for determining price, or . This would not be visible to the average user of the JavaBean.
+
+  private Color randomColor() {
+    int r = (int)(255*Math.random());
+    int g = (int)(255*Math.random());
+    int b = (int)(255*Math.random());
+    return new Color(r, g, b);
+  }
+  
+//The remainder of his example, not really important to this discussion. 
+  public void paint(Graphics g) {
+    Dimension d = getSize();
+    int h = d.height;
+    int w = d.width;
+    g.setColor(color);
+    if(rectangular) {
+     g.fillRect(0, 0, w-1, h-1);
+    }
+    else {
+      g.fillOval(0, 0, w-1, h-1);
+    }
+  }
+}
