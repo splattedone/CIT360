@@ -1,0 +1,58 @@
+------------------------------
+XML Mapping File
+------------------------------
+This part will also vary depending on the type of DB you implement. 
+A few notes:
+  1. You should save the mapping document in a file with the format <classname>.hbm.xml.
+  
+  2. The XML document should have <hibernate-mapping> as the root class, with all <class> elements nested within.
+  
+  3. A <meta> tag is optional.
+  
+  (4-6 are quoted directly from Tutorialspoint.com)
+  
+  4. The <id> element maps the unique ID attribute in class to the primary key of the database table. The name attribute of the 
+  id element refers to the property in the class and the column attribute refers to the column in the database table. The type 
+  attribute holds the hibernate mapping type, this mapping types will convert from Java to SQL data type.
+  
+  5. The <generator> element within the id element is used to generate the primary key values automatically. The class attribute 
+  of the generator element is set to native to let hibernate pick up either identity, sequence or hilo algorithm to create primary 
+  key depending upon the capabilities of the underlying database.
+  
+  6. The <generator> element within the id element is used to generate the primary key values automatically. The class attribute of 
+  the generator element is set to native to let hibernate pick up either identity, sequence or hilo algorithm to create primary key 
+  depending upon the capabilities of the underlying database.
+  
+*/
+ 
+    <?xml version = "1.0" encoding = "utf-8"?>
+    <!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+  
+  //The aforementioned master class
+    <hibernate-mapping>
+  
+  //Unique class description for each table in the DB you'll be interacting with.
+       <class name = "Employee" table = "EMPLOYEE">
+
+  //Optional meta description for added clarity
+          <meta attribute = "class-description">
+             This class contains the employee detail. 
+          </meta>
+  
+  //Maps the id attribute to the table primary key with the generator to generate new id's as needed.
+          <id name = "id" type = "int" column = "id">
+             <generator class="native"/>
+          </id>
+
+  //The specific properties for each column in the table, maps the java property name to the column name, then the outgoing java data
+  //type. Note the java properties are named using the camel case java convention (columnName), whereas the column names follow the 
+  //RDB convention (column_name).  
+          <property name = "firstName" column = "first_name" type = "string"/>
+          <property name = "lastName" column = "last_name" type = "string"/>
+          <property name = "salary" column = "salary" type = "int"/>
+
+  //Close each element
+       </class>
+    </hibernate-mapping>
