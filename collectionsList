@@ -1,3 +1,9 @@
+/*
+List is indexed, ordered, and may contain duplicate or null elements.
+
+Useful for something like a class roster.
+*/
+
 import java.util.*;
 
 public class CollectionsListTest {
