@@ -1,0 +1,31 @@
+/*
+a collection of key/value pairs. Both the key and value are objects. (Versus the index in a list, which isn't an object but simply a way to grab the object. 
+
+Must have unique keys.
+
+Values may be a collection themselves.
+*/
+
+import java.util.*;
+
+public class Collections {
+
+   public static void main(String[] args) {
+      Map m1 = new HashMap(); 
+      m1.put("Ryan", "8");
+      m1.put("Julie", "31");
+      m1.put("Jonathan", "12");
+      m1.put("Katie", "14");
+      m1.put("Matthew", "16");
+      m1.put("Jacob", "18");
+      System.out.println();
+      System.out.println(" Map Elements");
+      System.out.print("\t" + m1);
+   }
+}
+
+/*
+  The result:
+   Map Elements
+  {Jacob=18, Jonathan=12, Katie=14, Ryan=8, Matthew=16, Julie=31}
+*/
