@@ -1,0 +1,23 @@
+/*
+  Class/Bean 2 - "ColorsBeanInfo"
+  A fairly straightforward class with the publicly facing details about the bean. Again, where things aren't explicitly stated otherwise, the introspection feature will look into the bean for the information necessary to successfully use the bean. Here we're overriding getPropertyDescriptors() to control what is shared with the end user.
+*/
+
+  // A Bean information class.
+import java.beans.*;
+public class ColorsBeanInfo extends SimpleBeanInfo {
+  public PropertyDescriptor[] getPropertyDescriptors() {
+    try {
+      PropertyDescriptor rectangular = new
+        PropertyDescriptor("rectangular", Colors.class);
+      PropertyDescriptor pd[] = {rectangular};
+      return pd;
+    }
+    catch(Exception e) {
+      System.out.println("Exception caught. " + e);
+    }
+    return null;
+  }
+}
+
+/*
