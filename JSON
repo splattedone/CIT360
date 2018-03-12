@@ -1,4 +1,8 @@
 /*
+JSON (JavaScript Object Notation) is an alternative to XML and is intended to help pass data from Java to APIs for use elsewhere. It’s open-sourced, can be used with a variety of programming languages, and (best of all) it’s human readable. It’s similar to Hibernate in that it lets Java interface with an outside program, however Hibernate it geared towards relational databases. 
+    Because Hibernate is designed to interface with Java objects you’ll have to convert anything coming in via JSON into Java object first and then use Hibernate to dump it into your database. You’ll need to a few special JSON imports.
+
+
   JSON Syntax Rules
     1. Data is in name/value pairs
     2. Data is seperated by commas
