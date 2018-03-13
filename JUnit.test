@@ -1,3 +1,7 @@
+/*
+This method creates a simple tool to test the created unit. In this case, it specifies what the result should be and returns true when it is what is expected, or a specified answer when false."
+*/
+
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
