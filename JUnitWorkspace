@@ -1,3 +1,7 @@
+/*
+	In this case, we're creating a block of code to be tested. We're creating a string, setting a value, then testing to see if the messageUtil ends up being equal to message.
+*/
+
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
