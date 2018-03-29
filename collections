@@ -1,0 +1,111 @@
+/*
+Collections
+   - List - Elements can be inserted or accessed by their position in the list, using a zero-based index. Contains duplicates
+   - Set - A Set is a Collection that cannot contain duplicate elements. It models the mathematical set abstraction.
+   - Map - The Map interface maps unique keys to values. A key is an object that you use to retrieve a value at a later date.
+   - Queue - The java.util.Queue is a subtype of java.util.Collection interface. It is an ordered list of objects with its use limited to inserting elements at the end of list and deleting elements from the start of list i.e. it follows FIFO principle.
+   - Tree - TreeSet provides an implementation of the Set interface that uses a tree for storage. Objects are stored in a sorted and ascending order.
+*/
+
+import java.util.*;
+import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
+--List
+public class CollectionsListTest {
+
+   public static void main(String[] args) {
+      List first = new ArrayList();
+      first.add("Matthew");
+      first.add("Mark");
+      first.add("Luke");
+      System.out.println(" ArrayList Elements");
+      System.out.print("\t" + first);
+
+--Tree Set
+public class SetDemo {
+   public static void main(String args[]) { 
+         int count[] = {10, 20, 30, 40, 50, 60};
+         Set<Integer> set = new HashSet<Integer>();
+         try {
+            for(int i = 0; i < 5; i++) {
+               set.add(count[i]);
+            }
+            System.out.println(set);
+
+            TreeSet sortedSet = new TreeSet<Integer>(set);
+            System.out.println("The sorted list is:");
+            System.out.println(sortedSet);
+
+            System.out.println("The First element of the set is: "+ (Integer)sortedSet.first());
+            System.out.println("The last element of the set is: "+ (Integer)sortedSet.last());
+         }
+         catch(Exception e) {}
+      }
+  };
+
+--Map
+
+public class DemoCollectionsMap {
+
+   public static void main(String[] args) {
+      Map NeatoMap = new HashMap(); 
+      NeatoMap.put("Neato", "901");
+      NeatoMap.put("Frito", "910");
+      NeatoMap.put("Burrito", "912");
+      NeatoMap.put("Dorito", "114");
+
+      System.out.println();
+      System.out.println(" Map Elements");
+      System.out.print("\t" + m1);
+   }
+};
+
+--Queue
+public class MyQueue
+{
+  public static void main(String[] args)
+  {
+    Queue<Integer> ThisQueue = new LinkedList<>();
+ 
+    // Adds elements 1-25 to queue
+    for (int i=0; i<26; i++)
+     ThisQueue.add(i);
+ 
+    // Display contents of the queue.
+    System.out.println("Elements of queue-"+ ThisQueue);
+ 
+    System.out.println(ThisQueue);
+ 
+    // To view the head of queue
+    int head = ThisQueue.peek();
+    System.out.println("head of queue-" + head);
+ 
+    // Rest all methods of collection interface,
+    // Like size and contains can be used with this
+    // implementation.
+    int size = ThisQueue.size();
+    System.out.println("Size of queue-" + size);
+  }
+};
+
+--TreeSet
+public class FancyTreeDemo {
+
+   public static void main(String args[]) {
+      // Create a tree set
+      TreeSet NeatSet = new TreeSet();
+     
+      // Add elements to the tree set
+      NeatSet.add("ThisBranch");
+      NeatSet.add("ThatBranch");
+      NeatSet.add("ThoseBranches");
+      NeatSet.add("TheseBranches");
+      NeatSet.add("MomsBranch");
+      NeatSet.add("DadsBranch");
+      System.out.println(ts);
+   }
+};
+
