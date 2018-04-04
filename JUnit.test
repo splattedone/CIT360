@@ -1,19 +1,57 @@
 /*
 This method creates a simple tool to test the created unit. In this case, it specifies what the result should be and returns true when it is what is expected, or a specified answer when false."
+
 */
 
-import org.junit.runner.JUnitCore;
-import org.junit.runner.Result;
-import org.junit.runner.notification.Failure;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-public class TestRunner {
-   public static void main(String[] args) {
-      Result result = JUnitCore.runClasses(TestJunit.class);
+public class TestAssertions {
+
+   @Test
+   public void testAssertions() {
+      //test data
+      String str1 = new String ("Peter");
+      String str2 = new String ("James");
+      String str3 = new String ("John");
+      String str4 = new String ("Paul");
+      String str5 = null;
 		
-      for (Failure failure : result.getFailures()) {
-         System.out.println(failure.toString());
-      }
-		
-      System.out.println(result.wasSuccessful());
+      int val1 = 12;
+      int val2 = 21;
+
+      String[] expectedArray = {"Matthew", "Mark", "Luke"};
+      String[] resultArray =  {"Genesis", "Exodus", "Leviticus", "Numbers"};
+
+      
+      //Check whether two arrays are equal to each other.
+      assertArrayEquals(expectedArray, resultArray);
+      
+      //Returns true when str1 and str2 are equal
+      assertEquals(str1, str2);
+      
+      //Check that a condition is false, which is true in this case
+      assertFalse(val1 > val2);
+
+      //Check that an object isn't null, also true in this case
+      assertNotNull(str1);
+
+      //Check if two object references not point to the same object, false in this case
+      assertNotSame(str1,str3);
+
+      //Check that an object is null, false in this case
+      assertNull(str3);
+
+      //Compares two objects, returns true when they're the same
+      assertSame(str4,str5);
+
+      //Actual first, expected second. True if they match, false if they don't
+      assertThat(str4,str5);
+
+      //Check that a condition is true, which is true in this case
+      assertTrue (val1 < val2);
+
+
+
    }
-}  
+}
