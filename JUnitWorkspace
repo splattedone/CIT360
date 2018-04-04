@@ -7,12 +7,12 @@ import static org.junit.Assert.assertEquals;
 
 public class TestJunit {
 	
-   String message = "Hello World";	
+   String message = "Rexburg trumps Provo";	
    MessageUtil messageUtil = new MessageUtil(message);
 
    @Test
    public void testPrintMessage() {
-      message = "New Word";
+      message = "Rexburg trumps Provo";
       assertEquals(message,messageUtil.printMessage());
    }
 }
