@@ -10,6 +10,30 @@ class ThisHereURLExample {
    public static void main(String args[]) {
 
       try {
+      
+       ExecutorService exec = Executors.newWorkStealingPool();
+        
+        exec.invokeAll(taskList).stream().map(future -> {
+            try {
+                return future.get(10,TimeUnit.SECONDS);
+            } catch (Exception e) {
+                throw new IllegalStateException(e);
+            }
+        }).forEach(System.out::println);
+        
+        try {
+            exec.shutdown();
+            exec.awaitTermination(15, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            System.err.println("Tasks interrupted");
+        } finally {
+            if (!exec.isTerminated()) {
+                System.err.println("Tasks failed to close; cancelling forcefully.");
+            }
+            exec.shutdownNow();
+        }
+      }
+      
           public class ThatThereURLExample {
 
             private final String USER_AGENT = "Mozilla/5.0";
