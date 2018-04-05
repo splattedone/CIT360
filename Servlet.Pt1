@@ -1,0 +1,35 @@
+--Imports
+    package com.jbt;
+    import java.io.IOException;
+    import javax.servlet.ServletException;
+    import javax.servlet.http.HttpServlet;
+    import javax.servlet.http.HttpServletRequest;
+    import javax.servlet.http.HttpServletResponse;
+    
+    
+     --Implementation class LookatMeImAServlet 
+     
+    public class LookatMeImAServlet extends HttpServlet {
+     --This is important to help avoid InvalidClassExceptions during runtime. See Java Docs for more details.
+        private static final long serialVersionUID = 1L;
+
+        --Default constructor.
+
+        public LookatMeImAServlet() {
+        }
+
+        -- This method will handle all GET request.
+
+        protected void doGet(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
+          System.out.println("Hey, hey! Look at me, I'm a fancy servlet!");
+        }
+
+
+         -- This method will handle all POST request
+
+
+        protected void doPost(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
+        }
+    }
